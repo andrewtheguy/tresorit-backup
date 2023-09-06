@@ -22,6 +22,7 @@ function finish {
 
     status=""
 
+    echo "stopping"
     while [ -e /proc/$PID ]
     do
     echo "stopping"
