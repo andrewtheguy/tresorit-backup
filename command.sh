@@ -22,11 +22,13 @@ function finish {
     #
     tresorit-cli stop
 
-    while [ -e /proc/$PID ]
+    status=""
+
+    while [ "unreachable" != "$status" ]
     do
     echo "stopping"
         ps -ef
-    tresorit-cli status -p | grep "Tresorit daemon:" | awk '{ print $3}'
+    status=$(tresorit-cli status -p | grep "Tresorit daemon:" | awk '{ print $3}')
     sleep 1
     done
 }
