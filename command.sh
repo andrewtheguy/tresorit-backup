@@ -1,16 +1,14 @@
 #!/bin/bash
 set -eou pipefail
 
-SYNC_ONLY=${SYNC_ONLY:-false}
-
 tresorit-cli status
 echo "Starting tresorit cli…"
 tresorit-cli start
 tresorit-cli status
 
-#echo "Disabling logging…"
-#tresorit-cli logging --disable-log-sending
-#tresorit-cli logging --disable-metrics
+echo "Disabling logging…"
+tresorit-cli logging --disable-log-sending
+tresorit-cli logging --disable-metrics
 tresorit-cli logging --status
 
 PID=`pgrep tresorit-daemon`
@@ -24,11 +22,11 @@ function finish {
 
     status=""
 
-    while [ "unreachable" != "$status" ]
+    while [ -e /proc/$PID ]
     do
     echo "stopping"
         ps -ef
-    status=$(tresorit-cli status -p | grep "Tresorit daemon:" | awk '{ print $3}')
+    tresorit-cli status
     sleep 1
     done
 }
