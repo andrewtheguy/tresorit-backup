@@ -5,7 +5,7 @@ ENV PATH="/home/tresorit:${PATH}"
 
 # install dependencies
 RUN apt-get update && apt-get install -y \
-    curl && \
+    curl tini && \
    apt-get clean && \
    rm -rf /var/lib/apt/lists/*
 
@@ -30,7 +30,7 @@ RUN curl -LO https://installer.tresorit.com/tresorit_installer.run && \
     rm ./tresorit_installer.run 
 
 
-VOLUME /home/tresorit/workdir/Profiles
+VOLUME /home/tresorit/workdir/Profiles /home/tresorit/workdir/Logs
 #USER root
 
 COPY command.sh /usr/local/bin/command.sh
@@ -38,4 +38,4 @@ COPY command.sh /usr/local/bin/command.sh
 
 ENV PATH="${PATH}:/home/tresorit/workdir"
 
-CMD /usr/local/bin/command.sh
+CMD ["/usr/bin/tini", "--", "/usr/local/bin/command.sh"]

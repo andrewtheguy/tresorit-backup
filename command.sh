@@ -27,12 +27,16 @@ function finish {
     do
     echo "stopping"
         ps -ef
-    tresorit-cli status
+    #tresorit-cli status
     sleep 1
     done
+    exit 0
 }
 trap finish EXIT
 
 
 while [ -e /proc/$PID ]; do sleep 1; done
 
+echo "daemon died unexpectedly"
+
+exit 100
